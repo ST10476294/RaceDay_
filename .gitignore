@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+.vs/
+.DS_Store
+*.csproj.user
+TestResults/
+*.trx
+.env
+_handover/

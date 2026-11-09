@@ -1,0 +1,12 @@
+@model EventDto
+<div class="col-md-6 col-lg-4">
+    <a class="rd-card" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId">
+        <img src="@Display.Banner(Model)" alt="" />
+        <div class="rd-card-body">
+            <span class="rd-tag rd-tag-@Model.Discipline.ToLowerInvariant()">@Model.Discipline</span>
+            <h3>@Model.Name</h3>
+            <p class="rd-meta mb-1">@Display.DateTimeText(Model.EventDate)</p>
+            <p class="rd-meta mb-0">@Model.Location · @Display.Km(Model.DistanceKm)</p>
+        </div>
+    </a>
+</div>

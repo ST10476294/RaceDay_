@@ -1,0 +1,57 @@
+@model RegisterViewModel
+@{ ViewData["Title"] = "Register"; }
+<div class="rd-form-card">
+    <h1>Create your account</h1>
+    <form asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label"></label>
+            <input asp-for="FullName" class="form-control" autocomplete="name" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" autocomplete="email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" autocomplete="new-password" />
+            <div class="form-text">At least 8 characters.</div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ConfirmPassword" class="form-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        <fieldset class="mb-3">
+            <legend class="form-label">I want to</legend>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" asp-for="Role" id="roleParticipant" value="Participant" />
+                <label class="form-check-label" for="roleParticipant">Enter events (Participant)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" asp-for="Role" id="roleOrganiser" value="Organiser" />
+                <label class="form-check-label" for="roleOrganiser">Manage events (Organiser)</label>
+            </div>
+        </fieldset>
+        <div class="mb-3" id="organiserCode">
+            <label asp-for="OrganiserCode" class="form-label"></label>
+            <input asp-for="OrganiserCode" class="form-control" autocomplete="off" />
+            <div class="form-text">Organiser accounts need the code issued by RaceDay.</div>
+        </div>
+        <button type="submit" class="btn rd-btn w-100">Register</button>
+    </form>
+    <p class="mt-3 mb-0">Already registered? <a asp-action="Login">Log in</a></p>
+</div>
+@section Scripts {
+    <script>
+        // Only Organisers need the code box.
+        const organiser = document.getElementById('roleOrganiser');
+        const codeBox = document.getElementById('organiserCode');
+        const showCode = () => codeBox.hidden = !organiser.checked;
+        document.querySelectorAll('input[name="Role"]').forEach(r => r.addEventListener('change', showCode));
+        showCode();
+    </script>
+}

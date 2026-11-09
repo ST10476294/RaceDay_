@@ -1,0 +1,78 @@
+name: Validate Repository
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate Project Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check docs folder
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "ERROR: docs folder does not exist."
+            exit 1
+          fi
+
+          echo "docs folder exists."
+
+      - name: Check required files
+        run: |
+          required_files=(
+            "README.md"
+            "docs/ERD.png"
+            "docs/api-endpoint-plan.pdf"
+            "docs/RaceDay_Schema.sql"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "ERROR: Missing required file: $file"
+              exit 1
+            fi
+
+            echo "Found: $file"
+          done
+
+      - name: Check documentation is not empty
+        run: |
+          files=(
+            "README.md"
+            "docs/api-endpoint-plan.pdf"
+            "docs/RaceDay_Schema.sql"
+          )
+
+          for file in "${files[@]}"; do
+            if [ ! -s "$file" ]; then
+              echo "ERROR: File is empty: $file"
+              exit 1
+            fi
+
+            echo "$file contains data."
+          done
+
+      - name: Check ERD image
+        run: |
+          if ! file docs/ERD.png | grep -qi "PNG"; then
+            echo "ERROR: ERD.png is not a valid PNG image."
+            exit 1
+          fi
+
+          echo "ERD.png is a valid PNG image."
+
+      - name: Display repository structure
+        run: |
+          echo "Repository structure:"
+          find . -maxdepth 3 -type f | sort
+
+      - name: Validation successful
+        run: |
+          echo "========================================="
+          echo "ALL VALIDATION CHECKS PASSED"
+          echo "========================================="

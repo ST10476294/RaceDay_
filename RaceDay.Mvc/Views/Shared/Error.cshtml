@@ -1,0 +1,16 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+    var (heading, text) = Model.Code switch
+    {
+        404 => ("Off course", "We could not find that page or record."),
+        403 => ("Restricted area", "You do not have permission to do that."),
+        503 => ("Back shortly", "RaceDay is temporarily unavailable. Please try again in a moment."),
+        _ => ("Unexpected stop", "Something went wrong on our side. Please try again.")
+    };
+}
+<div class="rd-empty">
+    <h1>@heading</h1>
+    <p>@text</p>
+    <a class="btn rd-btn" asp-controller="Home" asp-action="Index">Back to events</a>
+</div>

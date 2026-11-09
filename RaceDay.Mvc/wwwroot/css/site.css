@@ -1,0 +1,99 @@
+/* RaceDay brand: night-race navy, start-line orange and a chequered finish stripe. */
+:root {
+  --rd-navy: #0b1f3a;
+  --rd-navy-soft: #16345c;
+  --rd-accent: #ff5a1f;
+  --rd-accent-dark: #d9430d;
+  --rd-lime: #c8f03c;
+  --rd-paper: #f4f6f9;
+  --rd-text: #1c2533;
+  --rd-muted: #5b6778;
+  --rd-line: #dfe4eb;
+  --rd-heading: "Avenir Next Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  --rd-body: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+.theme-organiser { --rd-accent: #0fa3a3; --rd-accent-dark: #0b7f7f; }
+
+html { position: relative; min-height: 100%; }
+body { background: var(--rd-paper); color: var(--rd-text); font-family: var(--rd-body); min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1; }
+a { color: var(--rd-accent-dark); }
+h1, h2, h3, .rd-logo { font-family: var(--rd-heading); font-weight: 800; }
+
+/* Navigation */
+.rd-nav { background: var(--rd-navy); }
+.rd-logo { font-size: 1.7rem; font-style: italic; letter-spacing: .02em; color: #fff; }
+.rd-logo span { color: var(--rd-accent); }
+.rd-nav .navbar-nav .nav-link { color: #e6ecf4; font-weight: 600; }
+.rd-nav .navbar-nav .nav-link:hover, .rd-nav .navbar-nav .nav-link:focus { color: #fff; }
+.rd-nav .navbar-nav .nav-link.active { color: #fff; box-shadow: inset 0 -3px 0 var(--rd-accent); }
+.rd-nav .navbar-text.rd-user { color: #e6ecf4; }
+.rd-role { background: var(--rd-accent); color: #fff; border-radius: 3px; font-size: .7rem; font-weight: 700; padding: .1rem .4rem; text-transform: uppercase; margin-left: .3rem; }
+.rd-checker { height: 10px; background: conic-gradient(#fff 25%, #000 0 50%, #fff 0 75%, #000 0) 0 0 / 10px 10px; }
+
+/* Buttons */
+.rd-btn { background: var(--rd-accent); border: 0; color: #fff; font-weight: 700; }
+.rd-btn:hover, .rd-btn:focus, .rd-btn:active { background: var(--rd-accent-dark) !important; color: #fff !important; }
+
+/* Page headings */
+.rd-title { font-size: 2.3rem; font-style: italic; text-transform: uppercase; color: var(--rd-navy); }
+.rd-section { font-size: 1.4rem; font-style: italic; text-transform: uppercase; color: var(--rd-navy); margin-bottom: .9rem; }
+.rd-meta { color: var(--rd-muted); }
+
+/* Heroes */
+.rd-hero { background: var(--rd-navy) url("/img/hero.svg") center bottom / cover no-repeat; color: #fff; padding: 4.5rem 0 5.5rem; }
+.rd-hero h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); font-style: italic; text-transform: uppercase; line-height: .95; }
+.rd-hero h1 span { color: var(--rd-lime); }
+.rd-hero p { font-size: 1.15rem; margin: .8rem 0 0; }
+.rd-banner { position: relative; background-color: var(--rd-navy); background-position: center; background-size: cover; color: #fff; min-height: 280px; display: flex; align-items: flex-end; }
+.rd-banner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 31, 58, .9), rgba(11, 31, 58, .1) 70%); }
+.rd-banner .container { position: relative; padding-bottom: 1.4rem; }
+.rd-banner h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-style: italic; text-transform: uppercase; margin: .4rem 0 0; }
+
+/* Event cards */
+.rd-filter { background: #fff; border: 1px solid var(--rd-line); border-radius: 8px; margin-top: -3.4rem; padding: 1rem; position: relative; box-shadow: 0 6px 18px rgba(11, 31, 58, .1); }
+.rd-card { background: #fff; border: 1px solid var(--rd-line); border-radius: 8px; color: inherit; display: block; height: 100%; overflow: hidden; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.rd-card:hover, .rd-card:focus { box-shadow: 0 10px 22px rgba(11, 31, 58, .16); color: inherit; transform: translateY(-3px); }
+.rd-card img { aspect-ratio: 16 / 7; display: block; object-fit: cover; width: 100%; }
+.rd-card-body { padding: 1rem; }
+.rd-card h3 { font-size: 1.4rem; margin: .5rem 0 .4rem; }
+.rd-tag { border-radius: 3px; color: #fff; display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .04em; padding: .15rem .5rem; text-transform: uppercase; }
+.rd-tag-running { background: #e0480f; }
+.rd-tag-walking { background: #14785a; }
+.rd-tag-cycling { background: #2257c5; }
+
+/* Panels, forms and tables */
+.rd-panel, .rd-form-card, .rd-table { background: #fff; border: 1px solid var(--rd-line); border-radius: 8px; }
+.rd-panel { padding: 1.25rem; }
+.rd-form-card { margin: 1.5rem auto; max-width: 460px; padding: 2rem; border-top: 5px solid var(--rd-accent); }
+.rd-form-wide { max-width: 760px; }
+.rd-form-card h1 { color: var(--rd-navy); font-size: 2rem; font-style: italic; margin-bottom: 1.2rem; text-transform: uppercase; }
+legend.form-label { font-size: 1rem; }
+.form-check-input:checked { background-color: var(--rd-accent); border-color: var(--rd-accent); }
+.rd-option input { accent-color: var(--rd-accent); }
+.rd-table th { background: var(--rd-navy); color: #fff; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.rd-time { font-variant-numeric: tabular-nums; font-weight: 700; }
+.rd-option { align-items: center; border: 1px solid var(--rd-line); border-radius: 6px; display: flex; gap: .6rem; margin-bottom: .5rem; padding: .6rem .8rem; }
+label.rd-option { cursor: pointer; }
+label.rd-option:has(input:checked) { border-color: var(--rd-accent); box-shadow: inset 0 0 0 1px var(--rd-accent); }
+.rd-facts { display: grid; gap: .3rem 1rem; grid-template-columns: max-content 1fr; }
+.rd-facts dt { color: var(--rd-muted); font-weight: 600; }
+.rd-facts dd { margin: 0; }
+.rd-stat { background: var(--rd-navy); border-bottom: 4px solid var(--rd-accent); border-radius: 8px; color: #fff; display: flex; flex-direction: column; min-height: 104px; justify-content: center; padding: 1rem 1.2rem; }
+.rd-stat strong { font-family: var(--rd-heading); font-size: 2.4rem; font-style: italic; line-height: 1; }
+.rd-stat strong.rd-stat-text { font-size: 1.5rem; }
+.rd-stat span { color: #c7d2e0; font-size: .85rem; margin-top: .3rem; }
+.rd-empty { background: #fff; border: 1px dashed #b9c3d0; border-radius: 8px; padding: 3rem 1rem; text-align: center; }
+.rd-empty h1, .rd-empty h2 { color: var(--rd-navy); font-style: italic; text-transform: uppercase; }
+.rd-avatar { border-radius: 50%; height: 150px; object-fit: cover; width: 150px; }
+.rd-avatar-empty { align-items: center; background: var(--rd-navy); color: #fff; display: inline-flex; font-family: var(--rd-heading); font-size: 4rem; font-weight: 800; justify-content: center; }
+.rd-banner-preview { border-radius: 6px; display: block; margin-bottom: .5rem; max-height: 170px; max-width: 100%; }
+
+/* Enrolment and result statuses */
+.status-badge { border-radius: 999px; display: inline-block; font-size: .78rem; font-weight: 700; padding: .2rem .7rem; }
+.status-confirmed { background: #d4f4dd; color: #0d6b34; }
+.status-pending { background: #ffedc2; color: #8a5a00; }
+.status-cancelled { background: #fbdcdc; color: #a12020; }
+
+.rd-footer { background: var(--rd-navy); color: #c7d2e0; font-size: .85rem; margin-top: 2rem; padding: 1.1rem 0; }
+.text-danger ul { margin-bottom: .6rem; padding-left: 1.1rem; }

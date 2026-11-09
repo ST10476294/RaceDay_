@@ -1,0 +1,55 @@
+@model EventEnrolmentsViewModel
+@{
+    ViewData["Title"] = "Results";
+    var active = Model.Enrolments.Where(e => e.Status != "Cancelled").ToList();
+}
+<h1 class="rd-title">Results</h1>
+<p class="rd-meta">@Model.Event.Name · @Display.Date(Model.Event.EventDate)</p>
+@if (!Model.HasFinished)
+{
+    <div class="alert alert-warning">Results can be captured after the event has taken place.</div>
+}
+else if (active.Count == 0)
+{
+    <div class="rd-empty"><h2>No active enrolments</h2><p>There are no results to capture for this event.</p></div>
+}
+else
+{
+    <p>Saving a row publishes that result to the Participant's My Results page immediately.</p>
+    <div class="table-responsive rd-table">
+        <table class="table align-middle mb-0">
+            <thead><tr><th>Participant</th><th>Category</th><th>Finish time</th><th>Overall</th><th>In category</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var e in active)
+                {
+                    var r = e.Result;
+                    var formId = $"result{e.EnrolmentId}";
+                    <tr>
+                        <td>
+                            @e.ParticipantName
+                            <form id="@formId" asp-action="SaveResult" method="post">
+                                <input type="hidden" name="EnrolmentId" value="@e.EnrolmentId" />
+                                <input type="hidden" name="EventId" value="@Model.Event.EventId" />
+                                @if (r != null) { <input type="hidden" name="ResultId" value="@r.ResultId" /> }
+                            </form>
+                        </td>
+                        <td>@e.CategoryName</td>
+                        <td><input class="form-control form-control-sm" form="@formId" name="FinishTime" value="@(r?.FinishTime?.ToString(@"hh\:mm\:ss"))" placeholder="hh:mm:ss" aria-label="Finish time for @e.ParticipantName" /></td>
+                        <td><input class="form-control form-control-sm" form="@formId" name="OverallPosition" type="number" min="1" value="@r?.OverallPosition" aria-label="Overall position for @e.ParticipantName" /></td>
+                        <td><input class="form-control form-control-sm" form="@formId" name="CategoryPosition" type="number" min="1" value="@r?.CategoryPosition" aria-label="Category position for @e.ParticipantName" /></td>
+                        <td>
+                            <select class="form-select form-select-sm" form="@formId" name="Status" aria-label="Status for @e.ParticipantName">
+                                @foreach (var status in new[] { "Finished", "DNF", "DSQ" })
+                                {
+                                    <option selected="@(r?.Status == status)">@status</option>
+                                }
+                            </select>
+                        </td>
+                        <td class="text-end"><button type="submit" form="@formId" class="btn btn-sm rd-btn">@(r == null ? "Publish" : "Update")</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<a class="btn btn-outline-secondary mt-3" asp-action="Dashboard">Back to dashboard</a>

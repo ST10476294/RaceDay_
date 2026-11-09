@@ -1,0 +1,65 @@
+@model CategoriesViewModel
+@{ ViewData["Title"] = "Categories"; }
+<h1 class="rd-title">Categories</h1>
+<p class="rd-meta">@Model.Event.Name · @Display.Date(Model.Event.EventDate)</p>
+
+<div class="table-responsive rd-table mb-4">
+    <table class="table align-middle mb-0">
+        <thead><tr><th>Name</th><th>Distance (km)</th><th>Capacity</th><th>Entry fee (R)</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var c in Model.Event.Categories)
+            {
+                var formId = $"category{c.CategoryId}";
+                <tr>
+                    <td>
+                        <form id="@formId" asp-action="UpdateCategory" asp-route-id="@Model.Event.EventId" method="post">
+                            <input type="hidden" name="CategoryId" value="@c.CategoryId" />
+                        </form>
+                        <input class="form-control form-control-sm" form="@formId" name="Name" value="@c.Name" aria-label="Name" required />
+                    </td>
+                    <td><input class="form-control form-control-sm" form="@formId" name="DistanceKm" type="number" step="0.01" value="@c.DistanceKm" aria-label="Distance" required /></td>
+                    <td><input class="form-control form-control-sm" form="@formId" name="MaxParticipants" type="number" value="@c.MaxParticipants" aria-label="Capacity" required /></td>
+                    <td><input class="form-control form-control-sm" form="@formId" name="EntryFee" type="number" step="0.01" value="@c.EntryFee" aria-label="Entry fee" required /></td>
+                    <td class="text-end text-nowrap">
+                        <button type="submit" form="@formId" class="btn btn-sm btn-outline-secondary">Save</button>
+                        <form class="d-inline" asp-action="DeleteCategory" asp-route-id="@Model.Event.EventId" method="post">
+                            <input type="hidden" name="categoryId" value="@c.CategoryId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @if (Model.Event.Categories.Count == 0)
+            {
+                <tr><td colspan="5">No categories yet. Participants cannot enter until you add one.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="rd-panel">
+    <h2 class="rd-section">Add a category</h2>
+    <form asp-action="AddCategory" asp-route-id="@Model.Event.EventId" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label asp-for="NewCategory.Name" class="form-label"></label>
+                <input asp-for="NewCategory.Name" class="form-control" placeholder="For example, 10km or Under 20" />
+            </div>
+            <div class="col-md-2">
+                <label asp-for="NewCategory.DistanceKm" class="form-label"></label>
+                <input asp-for="NewCategory.DistanceKm" class="form-control" type="number" step="0.01" />
+            </div>
+            <div class="col-md-2">
+                <label asp-for="NewCategory.MaxParticipants" class="form-label"></label>
+                <input asp-for="NewCategory.MaxParticipants" class="form-control" type="number" />
+            </div>
+            <div class="col-md-2">
+                <label asp-for="NewCategory.EntryFee" class="form-label"></label>
+                <input asp-for="NewCategory.EntryFee" class="form-control" type="number" step="0.01" />
+            </div>
+            <div class="col-md-2"><button type="submit" class="btn rd-btn w-100">Add</button></div>
+        </div>
+    </form>
+</div>
+<a class="btn btn-outline-secondary mt-3" asp-action="Dashboard">Back to dashboard</a>

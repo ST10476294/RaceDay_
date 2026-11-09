@@ -1,0 +1,45 @@
+@model HomeViewModel
+@{ ViewData["Title"] = "Upcoming events"; }
+@section Hero {
+    <section class="rd-hero">
+        <div class="container">
+            <h1>Find your<br /><span>next start line</span></h1>
+            <p>Road runs, walks and rides across South Africa.</p>
+        </div>
+    </section>
+}
+<form method="get" class="rd-filter row g-2 align-items-end mb-4">
+    <div class="col-sm-4">
+        <label class="form-label" for="discipline">Event type</label>
+        <select class="form-select" id="discipline" name="discipline">
+            <option value="">All types</option>
+            @foreach (var type in new[] { "Running", "Walking", "Cycling" })
+            {
+                <option value="@type" selected="@(Model.Discipline == type)">@type</option>
+            }
+        </select>
+    </div>
+    <div class="col-sm-5">
+        <label class="form-label" for="location">Location</label>
+        <input class="form-control" id="location" name="location" value="@Model.Location" placeholder="For example, Durban" />
+    </div>
+    <div class="col-sm-3 d-flex gap-2">
+        <button type="submit" class="btn rd-btn flex-fill">Filter</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Clear</a>
+    </div>
+</form>
+
+@if (Model.Events.Count == 0)
+{
+    <div class="rd-empty"><h2>No events found</h2><p>Try a different filter, or check back soon.</p></div>
+}
+else
+{
+    <h2 class="rd-section">Upcoming events</h2>
+    <div class="row g-4">
+        @foreach (var e in Model.Events)
+        {
+            <partial name="_EventCard" model="e" />
+        }
+    </div>
+}

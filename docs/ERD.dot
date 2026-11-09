@@ -1,0 +1,64 @@
+// Source of docs/ERD.png. Regenerate with: dot -Tpng docs/ERD.dot -o docs/ERD.png
+digraph RaceDay {
+  rankdir=LR; nodesep=0.45; ranksep=1.3; dpi=120;
+  node [shape=plain, fontname="DejaVu Sans", fontsize=11];
+  edge [fontname="DejaVu Sans", fontsize=8, arrowsize=0.7];
+
+  Users [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5" align="left">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Users</b></font></td></tr>
+    <tr><td align="left"><u>UserId</u> (PK) INT</td></tr>
+    <tr><td align="left">FullName VARCHAR(100)</td></tr>
+    <tr><td align="left">Email VARCHAR(150) UNIQUE</td></tr>
+    <tr><td align="left">PasswordHash VARCHAR(255)</td></tr>
+    <tr><td align="left">Role VARCHAR(20)</td></tr>
+    <tr><td align="left">CreatedAt DATETIME</td></tr>
+    <tr><td align="left">ProfilePictureUrl VARCHAR(500) NULL</td></tr></table>>];
+  Events [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Events</b></font></td></tr>
+    <tr><td align="left"><u>EventId</u> (PK) INT</td></tr>
+    <tr><td align="left">OrganiserId (FK) INT</td></tr>
+    <tr><td align="left">Name VARCHAR(150)</td></tr>
+    <tr><td align="left">Discipline VARCHAR(20)</td></tr>
+    <tr><td align="left">EventDate DATETIME</td></tr>
+    <tr><td align="left">Location VARCHAR(150)</td></tr>
+    <tr><td align="left">Description VARCHAR(500) NULL</td></tr>
+    <tr><td align="left">DistanceKm DECIMAL(5,2)</td></tr>
+    <tr><td align="left">BannerImageUrl VARCHAR(500) NULL</td></tr></table>>];
+  Categories [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Categories</b></font></td></tr>
+    <tr><td align="left"><u>CategoryId</u> (PK) INT</td></tr>
+    <tr><td align="left">EventId (FK) INT</td></tr>
+    <tr><td align="left">Name VARCHAR(50)</td></tr>
+    <tr><td align="left">DistanceKm DECIMAL(5,2)</td></tr>
+    <tr><td align="left">MaxParticipants INT</td></tr>
+    <tr><td align="left">EntryFee DECIMAL(8,2)</td></tr></table>>];
+  Routes [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Routes</b></font></td></tr>
+    <tr><td align="left"><u>RouteId</u> (PK) INT</td></tr>
+    <tr><td align="left">EventId (FK) INT</td></tr>
+    <tr><td align="left">Description VARCHAR(500) NULL</td></tr>
+    <tr><td align="left">ElevationGainM INT NULL</td></tr>
+    <tr><td align="left">MapUrl VARCHAR(255) NULL</td></tr></table>>];
+  Enrolments [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Enrolments</b></font></td></tr>
+    <tr><td align="left"><u>EnrolmentId</u> (PK) INT</td></tr>
+    <tr><td align="left">ParticipantId (FK) INT</td></tr>
+    <tr><td align="left">CategoryId (FK) INT</td></tr>
+    <tr><td align="left">EnrolmentDate DATETIME</td></tr>
+    <tr><td align="left">Status VARCHAR(20)</td></tr></table>>];
+  Results [label=<<table border="1" cellborder="1" cellspacing="0" cellpadding="5">
+    <tr><td bgcolor="#2c3e50"><font color="white"><b>Results</b></font></td></tr>
+    <tr><td align="left"><u>ResultId</u> (PK) INT</td></tr>
+    <tr><td align="left">EnrolmentId (FK) INT UNIQUE</td></tr>
+    <tr><td align="left">FinishTime TIME NULL</td></tr>
+    <tr><td align="left">OverallPosition INT NULL</td></tr>
+    <tr><td align="left">CategoryPosition INT NULL</td></tr>
+    <tr><td align="left">Status VARCHAR(20)</td></tr></table>>];
+
+  Users -> Events [label="1 organises many\n(1 to 0..N)"];
+  Events -> Categories [label="1 has many\n(1 to 0..N)"];
+  Events -> Routes [label="1 has many\n(1 to 0..N)"];
+  Categories -> Enrolments [label="1 has many\n(1 to 0..N)"];
+  Users -> Enrolments [label="1 enters many\n(1 to 0..N)"];
+  Enrolments -> Results [label="1 has at most one\n(1 to 0..1)"];
+}

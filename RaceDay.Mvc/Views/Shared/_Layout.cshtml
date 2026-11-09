@@ -1,0 +1,86 @@
+@functions {
+    // Highlights the menu item for the current page.
+    string Active(string controller, string action) =>
+        ViewContext.RouteData.Values["controller"]?.ToString() == controller
+        && ViewContext.RouteData.Values["action"]?.ToString() == action ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | RaceDay</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="@(CurrentUser.IsOrganiser ? "theme-organiser" : "theme-participant")">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark rd-nav">
+            <div class="container">
+                <a class="navbar-brand rd-logo" asp-controller="Home" asp-action="Index">RACE<span>DAY</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto">
+                        @if (CurrentUser.IsOrganiser)
+                        {
+                            <li class="nav-item"><a class="nav-link @Active("Organiser", "Dashboard")" asp-controller="Organiser" asp-action="Dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Organiser", "Create")" asp-controller="Organiser" asp-action="Create">New Event</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Home", "Index")" asp-controller="Home" asp-action="Index">All Events</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Profile", "Index")" asp-controller="Profile" asp-action="Index">Profile</a></li>
+                        }
+                        else if (CurrentUser.IsParticipant)
+                        {
+                            <li class="nav-item"><a class="nav-link @Active("Home", "Index")" asp-controller="Home" asp-action="Index">Events</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Participant", "MyEvents")" asp-controller="Participant" asp-action="MyEvents">My Events</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Participant", "MyResults")" asp-controller="Participant" asp-action="MyResults">My Results</a></li>
+                            <li class="nav-item"><a class="nav-link @Active("Profile", "Index")" asp-controller="Profile" asp-action="Index">Profile</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link @Active("Home", "Index")" asp-controller="Home" asp-action="Index">Events</a></li>
+                        }
+                    </ul>
+                    @if (CurrentUser.IsLoggedIn)
+                    {
+                        <span class="navbar-text me-3 rd-user">@CurrentUser.FullName <span class="rd-role">@CurrentUser.Role</span></span>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-light me-2" asp-controller="Account" asp-action="Login">Log in</a>
+                        <a class="btn btn-sm rd-btn" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+                </div>
+            </div>
+        </nav>
+        <div class="rd-checker" aria-hidden="true"></div>
+    </header>
+
+    @RenderSection("Hero", required: false)
+
+    <main class="container py-4">
+        @if (TempData["Success"] is string success)
+        {
+            <div class="alert alert-success" role="status">@success</div>
+        }
+        @if (TempData["Error"] is string error)
+        {
+            <div class="alert alert-danger" role="alert">@error</div>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="rd-footer">
+        <div class="container">RACEDAY · Running, walking and cycling events across South Africa</div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

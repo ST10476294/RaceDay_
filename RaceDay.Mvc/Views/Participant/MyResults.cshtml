@@ -1,0 +1,35 @@
+@model List<EnrolmentDto>
+@{ ViewData["Title"] = "My Results"; }
+<h1 class="rd-title">My Results</h1>
+@if (Model.Count == 0)
+{
+    <div class="rd-empty"><h2>No results yet</h2><p>Results appear here after the organiser publishes them.</p></div>
+}
+else
+{
+    <div class="table-responsive rd-table">
+        <table class="table align-middle mb-0">
+            <thead><tr><th>Event</th><th>Date</th><th>Category</th><th>Finish time</th><th>Position</th><th>Status</th></tr></thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    var result = e.Result!;
+                    <tr>
+                        <td>@e.EventName</td>
+                        <td>@Display.Date(e.EventDate)</td>
+                        <td>@e.CategoryName</td>
+                        <td class="rd-time">@Display.Time(result.FinishTime)</td>
+                        <td>
+                            @if (result.OverallPosition is { } position)
+                            {
+                                <span>@Display.Ordinal(position) out of @e.TotalFinishers @(e.TotalFinishers == 1 ? "finisher" : "finishers")</span>
+                            }
+                            else { <span>-</span> }
+                        </td>
+                        <td><partial name="_StatusBadge" model="result.Status" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

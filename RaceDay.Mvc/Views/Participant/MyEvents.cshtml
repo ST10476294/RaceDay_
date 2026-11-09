@@ -1,0 +1,39 @@
+@model List<EnrolmentDto>
+@{ ViewData["Title"] = "My Events"; }
+<h1 class="rd-title">My Events</h1>
+@if (Model.Count == 0)
+{
+    <div class="rd-empty">
+        <h2>No entries yet</h2>
+        <p>Your next race is waiting.</p>
+        <a class="btn rd-btn" asp-controller="Home" asp-action="Index">Browse events</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive rd-table">
+        <table class="table align-middle mb-0">
+            <thead><tr><th>Event</th><th>Date</th><th>Category</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td><a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId">@e.EventName</a></td>
+                        <td>@Display.DateTimeText(e.EventDate)</td>
+                        <td>@e.CategoryName</td>
+                        <td><partial name="_StatusBadge" model="e.Status" /></td>
+                        <td class="text-end">
+                            @if (e.Status != "Cancelled" && e.EventDate > DateTime.Now)
+                            {
+                                <form asp-action="Cancel" asp-route-id="@e.EnrolmentId" method="post"
+                                      onsubmit="return confirm('Cancel this entry? You will not be able to re-enter this category.');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel entry</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

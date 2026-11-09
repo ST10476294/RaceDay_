@@ -1,0 +1,70 @@
+@model EventDto
+@{ ViewData["Title"] = Model.Name; var upcoming = Model.EventDate > DateTime.Now; }
+@section Hero {
+    <section class="rd-banner" style="background-image: url('@Display.Banner(Model)')">
+        <div class="container">
+            <span class="rd-tag rd-tag-@Model.Discipline.ToLowerInvariant()">@Model.Discipline</span>
+            <h1>@Model.Name</h1>
+        </div>
+    </section>
+}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <h2 class="rd-section">Event information</h2>
+        <dl class="rd-facts">
+            <dt>Date</dt><dd>@Display.DateTimeText(Model.EventDate)</dd>
+            <dt>Location</dt><dd>@Model.Location</dd>
+            <dt>Distance</dt><dd>@Display.Km(Model.DistanceKm)</dd>
+            <dt>Event type</dt><dd>@Model.Discipline</dd>
+        </dl>
+        <p>@Model.Description</p>
+        @if (Model.Routes.Count > 0)
+        {
+            <h2 class="rd-section">Route</h2>
+            @foreach (var route in Model.Routes)
+            {
+                <p class="mb-1">@route.Description</p>
+                @if (route.ElevationGainM != null) { <p class="rd-meta">Elevation gain: @route.ElevationGainM m</p> }
+            }
+        }
+    </div>
+    <div class="col-lg-5">
+        <div class="rd-panel">
+            <h2 class="rd-section">Categories</h2>
+            @if (Model.Categories.Count == 0)
+            {
+                <p class="mb-0">Categories have not been added yet.</p>
+            }
+            else if (CurrentUser.IsParticipant && upcoming)
+            {
+                <form asp-action="Enter" asp-route-id="@Model.EventId" method="post">
+                    @foreach (var c in Model.Categories)
+                    {
+                        <label class="rd-option">
+                            <input type="radio" name="categoryId" value="@c.CategoryId" required />
+                            <span><strong>@c.Name</strong> · @Display.Km(c.DistanceKm)</span>
+                            <span class="ms-auto">@Display.Rand(c.EntryFee)</span>
+                        </label>
+                    }
+                    <button type="submit" class="btn rd-btn w-100 mt-2">Enter event</button>
+                </form>
+            }
+            else
+            {
+                @foreach (var c in Model.Categories)
+                {
+                    <div class="rd-option">
+                        <span><strong>@c.Name</strong> · @Display.Km(c.DistanceKm)</span>
+                        <span class="ms-auto">@Display.Rand(c.EntryFee)</span>
+                    </div>
+                }
+                @if (!CurrentUser.IsLoggedIn && upcoming)
+                {
+                    <a class="btn rd-btn w-100 mt-2" asp-controller="Account" asp-action="Login"
+                       asp-route-returnUrl="@Url.Action("Details", "Events", new { id = Model.EventId })">Log in to enter</a>
+                }
+                @if (!upcoming) { <p class="rd-meta mt-2 mb-0">Entries are closed for this event.</p> }
+            }
+        </div>
+    </div>
+</div>

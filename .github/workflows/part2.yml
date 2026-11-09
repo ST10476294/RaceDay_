@@ -1,0 +1,34 @@
+name: RaceDay Build and Tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate submission structure
+        run: |
+          test -s README.md
+          test -s docs/ERD.png
+          test -s docs/api-endpoint-plan.pdf
+          test -s docs/RaceDay_Schema.sql
+          test -s RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+          test -s RaceDay.Mvc/RaceDay.Mvc.csproj
+          test -s RaceDay.Mvc/Dockerfile
+      - run: dotnet restore RaceDay.Api.sln
+      - name: Build API, tests and MVC
+        run: dotnet build RaceDay.Api.sln --configuration Release --no-restore
+      - run: dotnet test RaceDay.Api.sln --configuration Release --no-build --logger trx --results-directory TestResults
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: TestResults/*.trx
+      - name: Build MVC Docker image
+        run: docker build --tag raceday-mvc RaceDay.Mvc

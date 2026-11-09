@@ -1,0 +1,44 @@
+@model ProfileFormViewModel
+@{ ViewData["Title"] = "Profile"; }
+<h1 class="rd-title">Profile</h1>
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="rd-panel text-center">
+            @if (Model.ProfilePictureUrl != null)
+            {
+                <img class="rd-avatar" src="@Model.ProfilePictureUrl" alt="Your profile picture" />
+            }
+            else
+            {
+                <div class="rd-avatar rd-avatar-empty" aria-hidden="true">@(string.IsNullOrEmpty(Model.FullName) ? '?' : Model.FullName[0])</div>
+            }
+            <form asp-action="Picture" method="post" enctype="multipart/form-data" class="mt-3">
+                <label class="form-label" for="picture">Profile picture</label>
+                <input class="form-control mb-2" type="file" id="picture" name="picture" accept=".jpg,.jpeg,.png,.webp" required />
+                <div class="form-text mb-2">JPG, PNG or WEBP, up to 5 MB.</div>
+                <button type="submit" class="btn btn-outline-secondary w-100">Upload picture</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="rd-panel">
+            <form asp-action="Index" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Role" type="hidden" />
+                <input asp-for="ProfilePictureUrl" type="hidden" />
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <p class="rd-meta">Account type: @Model.Role</p>
+                <button type="submit" class="btn rd-btn">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>
