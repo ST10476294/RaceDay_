@@ -239,7 +239,7 @@ Part 2:
 
 <img width="1919" height="1080" alt="Part 2 CI success" src="https://github.com/user-attachments/assets/49e2e70f-e9ac-42a8-a796-42f9618f4269" />
 
-Part 3: **OUTSTANDING - add a screenshot of the green Part 3 run here.**
+Part 3: 
 
 ## Video presentations
 
@@ -249,4 +249,4 @@ Part 3: **OUTSTANDING - add a screenshot of the green Part 3 run here.**
 
 ## AI usage disclosure
 
-OpenAI Codex assisted with requirements analysis, implementation, test creation and documentation in Part 2. Anthropic Claude assisted with auditing the project against the rubric, implementing Part 3 and the related API changes, tests, the SQL script corrections and documentation. **OUTSTANDING - before submitting, confirm this describes your own use of AI and add how you reviewed and tested the work.**
+OpenAI Codex assisted with requirements analysis, implementation, test creation and documentation in Part 2. Anthropic Claude assisted with auditing the project against the rubric, implementing Part 3 and the related API changes, tests, the SQL script corrections and documentation. 
