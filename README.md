@@ -245,7 +245,7 @@ Part 3:
 
 - Part 1: https://www.youtube.com/shorts/ibWM3m3GF6c
 - Part 2: https://youtu.be/6HNs7CuFW24?si=bb1tU_o6eJtcxD9F
-- Part 3: **OUTSTANDING - add the unlisted YouTube link here.**
+- Part 3: https://youtu.be/B-w3C0V7NyE
 
 ## AI usage disclosure
 
